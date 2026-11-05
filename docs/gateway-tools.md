@@ -6,16 +6,52 @@ that is not here, the skill is wrong.
 
 Endpoint: `https://mcp.abnasia.org/mcp` — MCP over HTTP, streamable transport.
 
-## Auth, in two phases
+## Auth
 
-**Phase 1 — API key (shipped first).** The account holder creates a key at
-`https://one.abnasia.org/abn-gateway`, sends it as `X-Api-Key`. One paste, works
-in every agent, no browser round trip. Keys are scoped, listed, revocable.
+Live today: OAuth 2.1 through the gateway, which federates to OneID; API keys for
+scripts. The gateway is its own authorization server because OneID (Frappe
+OAuth2) publishes no `registration_endpoint`, no PKCE advertisement and no
+`jwks_uri`, so an MCP client cannot register itself there.
 
-**Phase 2 — the gateway as its own authorization server.** OneID (Frappe
-OAuth2) publishes no `registration_endpoint`, no `code_challenge_methods_supported`
-and no `jwks_uri`, so an MCP client cannot register itself there. The gateway
-therefore federates:
+```
+agent ──DCR──▶ gateway  (/.well-known/oauth-authorization-server, PKCE S256)
+                  │
+                  └── one pre-registered client ──▶ OneID authorize/token
+```
+
+| Route | What it does |
+|---|---|
+| `GET /.well-known/oauth-protected-resource` | resource metadata, points at the gateway as AS |
+| `GET /.well-known/oauth-authorization-server` | issuer, endpoints, `code_challenge_methods_supported: ["S256"]` |
+| `POST /register` | dynamic client registration; redirect URIs restricted to loopback and known agent schemes |
+| `GET /authorize` | stores the agent's client, state and PKCE challenge, redirects to OneID |
+| `GET /callback` | exchanges the OneID code, issues the agent's code, redirects back |
+| `POST /token` | `authorization_code` + PKCE, `refresh_token` with rotation |
+| `POST /revoke` | revokes a refresh token |
+| `GET /services` | the catalog, no account needed (the public funnel) |
+| `GET /keys` | the human page: sign in with OneID, list, create, revoke keys |
+
+Access tokens: JWT HS256, 1 h, audience `<base>/mcp`. Refresh: 30 days, rotated on
+use — a reused refresh token is refused. `/mcp` answers `401` with
+`WWW-Authenticate: Bearer resource_metadata="…"` when no credential is present,
+which is what makes an agent start the flow.
+
+**OneID client requirements, learned the hard way:** the OAuth Client must carry
+an `allowed_roles` entry the signing-in user holds (Frappe's
+`user_has_allowed_role()` returns false for an empty list, and the failure reads
+"Invalid client_id parameter value"). `All` works for everyone.
+
+Entitlements are derived from OneID roles at token time, not stored: a System
+User is staff (all tools), anyone else is a prospect (`rfp.create`,
+`keys.create`).
+
+## API keys
+
+A key is minted with `create_api_key`, shown once, sent as `X-Api-Key`. Keys are
+scoped (default `rfp.create`), listed with `list_api_keys` and killed with
+`revoke_api_key`. A key never carries `keys.create`: a key cannot mint keys.
+
+Historical note, kept because it explains the design:
 
 ```
 agent ──DCR──▶ gateway  (/.well-known/oauth-authorization-server, PKCE S256)

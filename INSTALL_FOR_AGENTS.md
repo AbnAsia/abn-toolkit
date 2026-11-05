@@ -31,7 +31,7 @@ git ls-remote https://github.com/AbnAsia/abn-toolkit.git HEAD
 If that fails, stop and tell the person: "This machine can't reach
 github.com/AbnAsia/abn-toolkit. Check the network or proxy, then ask me again."
 
-**Gateway.** Check the server answers:
+**Gateway.** Check the server answers (this needs no sign-in):
 
 ```
 curl -sS -m 10 -o /dev/null -w '%{http_code}\n' https://mcp.abnasia.org/healthz
@@ -164,8 +164,9 @@ updates, fixes what it can, and ends in **one line**:
   gateway is unreachable; this is a working state, not a failure.
 - Anything else is one line per problem, each with the one step to take.
 
-Without the setup skill, call `get_services` (free, no auth). A catalog version
-in the answer means the server is reachable.
+Without the setup skill, call `get_account` (needs the sign-in). A gateway
+version in the answer means the whole chain works. The catalog alone needs no
+account: `curl -s https://mcp.abnasia.org/services`.
 
 ## 6. Finish
 
