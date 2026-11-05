@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Checks the ABN gateway from here. Prints one line per check:
+#   ok|fix|info <name> <message>
+# Never fails the task: no network is an `info` line and exit 0.
+set -u
+
+URL="${ABN_GATEWAY_URL:-https://mcp.abnasia.org}"
+LIMIT="${ABN_CHECK_TIMEOUT:-6}"
+TOOLKIT_VERSION="0.1.0"
+
+say() { printf '%s %s %s\n' "$1" "$2" "$3"; }
+
+if ! command -v curl >/dev/null 2>&1; then
+  say info gateway "curl not found; cannot check the server from here"
+  exit 0
+fi
+
+code="$(curl -sS -m "$LIMIT" -o /dev/null -w '%{http_code}' "$URL/healthz" 2>/dev/null || true)"
+[ -n "$code" ] || code=000
+case "$code" in
+  200)     say ok   gateway "reachable at $URL" ;;
+  000)     say info gateway "not reachable from here; the skills still work, briefs go by email" ;;
+  401|403) say fix  gateway "reachable but rejecting the client; check sign-in or the API key" ;;
+  *)       say fix  gateway "answered $code; check the server or the network" ;;
+esac
+
+latest="$(curl -fsS -m "$LIMIT" "https://raw.githubusercontent.com/AbnAsia/abn-toolkit/main/VERSION" 2>/dev/null | tr -d '[:space:]' || true)"
+case "$latest" in
+  "")                 say info skills "could not check for a newer toolkit" ;;
+  "$TOOLKIT_VERSION") say ok   skills "version $TOOLKIT_VERSION (latest)" ;;
+  [0-9]*.[0-9]*.[0-9]*) say fix skills "version $TOOLKIT_VERSION installed, $latest is out: npx -y skills add AbnAsia/abn-toolkit --skill '*' --agent <id> --yes --global" ;;
+  *)                  say info skills "could not read the published version" ;;
+esac
+
+exit 0

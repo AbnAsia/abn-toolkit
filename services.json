@@ -1,0 +1,156 @@
+{
+  "catalog": "abn-services",
+  "version": "0.1.0",
+  "updated": "2026-11-05",
+  "currency": "USD",
+  "pricing_policy": "No list prices. Every engagement is quoted after a scoping call. A brief submitted through scope-project gets a written estimate within three business days.",
+  "company": {
+    "name": "ABN Asia",
+    "short": "ABN",
+    "positioning": "AI. Banking. Network Security.",
+    "summary": "ABN Asia builds and reviews software for organisations that cannot afford to find out in production. Founded by people with academic roots and professional experience across the United States, the Netherlands, Hungary, Japan, South Korea, Singapore and Vietnam.",
+    "commitment": "Faster. Better. More reliable. In most cases cheaper.",
+    "contact": "contact@abnasia.org",
+    "website": "https://abnasia.org",
+    "timezones": ["Asia/Ho_Chi_Minh", "Asia/Singapore", "Europe/Amsterdam"],
+    "languages": ["en", "vi", "nl", "hu", "ja", "ko"]
+  },
+  "offers": [
+    {
+      "id": "secure-software",
+      "name": "Secure software delivery",
+      "summary": "Build a system, or audit one, with the security decisions made before the first line of code: a threat model, enforced least privilege, isolation proven by tests, supply-chain discipline, secrets that never reach a repository.",
+      "for_who": "Teams commissioning software that touches money, health, logistics or communications, and teams inheriting a system nobody can safely change.",
+      "deliverables": [
+        "Written threat model naming each asset, the adversary and the business cost of failure",
+        "Architecture and data-flow review with a ranked findings list",
+        "Implementation, or a remediation plan the team can execute itself",
+        "Test suite covering isolation, authorisation and failure paths",
+        "Handover pack: runbook, dependency inventory, incident contacts"
+      ],
+      "engagement": ["fixed-scope sprint (2-6 weeks)", "embedded team (monthly)", "audit only (1-2 weeks)"],
+      "good_fit_when": [
+        "A breach would stop the business, not just annoy it",
+        "Several vendors' components meet in one system",
+        "A contractor wrote it and left"
+      ],
+      "not_a_fit_when": ["You need a landing page this week"],
+      "next_step": "scope-project"
+    },
+    {
+      "id": "frappe-platform",
+      "name": "ERP, CRM and operations on Frappe",
+      "summary": "Implementation, migration and custom apps on Frappe and ERPNext: CRM, Helpdesk, HRMS, accounting, manufacturing, plus the custom DocTypes and workflows the standard modules do not cover.",
+      "for_who": "Companies replacing spreadsheets and email with one system of record, or running Frappe already and stuck on version drift, customisation debt or performance.",
+      "deliverables": [
+        "Module map and data model for your actual process, not the demo's",
+        "Migration from the current tools, with reconciliation counts",
+        "Custom apps packaged properly (bench-installable, versioned, tested)",
+        "Roles, permissions and audit trail configured and demonstrated",
+        "Training for the people who will run it"
+      ],
+      "engagement": ["discovery (1 week)", "implementation (6-16 weeks)", "support retainer (monthly)"],
+      "good_fit_when": [
+        "You have outgrown a spreadsheet but not outgrown a spreadsheet's price",
+        "You want the source and the database, not a rented black box"
+      ],
+      "not_a_fit_when": ["You need a licensed closed-source ERP with vendor certification"],
+      "next_step": "scope-project"
+    },
+    {
+      "id": "ai-systems",
+      "name": "AI systems that do a job",
+      "summary": "Assistants, retrieval over your own documents, document automation and agents with real tool access — built with the evaluation harness first, so quality is measured before it is promised.",
+      "for_who": "Teams with a specific repetitive decision or document flow, and a person who currently does it by hand.",
+      "deliverables": [
+        "Evaluation set built from your real cases before any model is chosen",
+        "Retrieval or agent pipeline with measured accuracy and failure modes",
+        "Human-in-the-loop gates on anything that costs money or changes records",
+        "Cost and latency budget per task",
+        "Runbook for model or vendor changes"
+      ],
+      "engagement": ["proof of value (2-4 weeks)", "production build (6-12 weeks)", "retainer with eval re-runs"],
+      "good_fit_when": [
+        "The task has a checkable answer, so quality can be measured",
+        "Someone can name the 50 cases the system must get right"
+      ],
+      "not_a_fit_when": ["The goal is a demo for a board meeting"],
+      "next_step": "scope-project"
+    },
+    {
+      "id": "network-security",
+      "name": "Network and application security",
+      "summary": "Assessment and hardening of the perimeter and the application: cloud and Kubernetes configuration, exposed services, identity and access, logging and incident readiness.",
+      "for_who": "Organisations with a public surface they did not design themselves, or a compliance deadline and no map of their own estate.",
+      "deliverables": [
+        "Asset and exposure inventory with evidence",
+        "Ranked findings, each with a reproduction and a fix",
+        "Hardening applied or specified (firewall, ingress, secrets, IAM)",
+        "Detection and alerting for the paths that matter",
+        "One-page incident card: who to call, what to do first"
+      ],
+      "engagement": ["assessment (1-2 weeks)", "hardening project", "quarterly review"],
+      "good_fit_when": [
+        "Nobody can say which ports are open to the internet right now",
+        "A regulator, a customer or an insurer is asking"
+      ],
+      "not_a_fit_when": ["You want a penetration test certificate with no remediation"],
+      "next_step": "scope-project"
+    },
+    {
+      "id": "data-platform",
+      "name": "Data platforms and reporting",
+      "summary": "PostgreSQL and Supabase platforms, pipelines, analytics and reporting that reconcile — including high-availability clusters, backup and restore drills, and dashboards the business trusts.",
+      "for_who": "Teams whose numbers disagree between systems, or whose database is a single server nobody has restored from.",
+      "deliverables": [
+        "Schema and index design with query budgets",
+        "Replication, backup and a restore that was actually rehearsed",
+        "Pipelines with data-quality checks and failure alerts",
+        "Dashboards with definitions written down",
+        "Access model: who can read what, enforced in the database"
+      ],
+      "engagement": ["platform review (1 week)", "build or migration", "retainer"],
+      "good_fit_when": [
+        "Two reports give two answers",
+        "The backup has never been restored"
+      ],
+      "not_a_fit_when": ["You need a data warehouse vendor licence"],
+      "next_step": "scope-project"
+    },
+    {
+      "id": "vertical-products",
+      "name": "Vertical products",
+      "summary": "Ready-built platforms ABN runs itself, which can be licensed or adapted: education (EduTalk, MiniSchool), operations and field work (GreenOS), real estate (REAL), and the multi-language publishing pipeline behind news.abnasia.org.",
+      "for_who": "Organisations that want a working product in weeks rather than a build from zero, and can accept its model with adaptations.",
+      "deliverables": [
+        "Product walkthrough against your process",
+        "Configuration and branding",
+        "Data migration of your first records",
+        "Optional custom modules on top"
+      ],
+      "engagement": ["licence + onboarding", "adaptation project"],
+      "good_fit_when": ["Your process is close to the product's model"],
+      "not_a_fit_when": ["Your process is the differentiator and must be built bespoke"],
+      "next_step": "scope-project"
+    }
+  ],
+  "how_abn_works": {
+    "steps": [
+      "A written brief (scope-project produces one)",
+      "A 30-minute call to challenge the brief",
+      "A fixed-scope proposal with price, dates and what is out of scope",
+      "Weekly demo of working software, not status reports",
+      "Handover with source, database and runbook"
+    ],
+    "contracts": ["fixed scope", "time and materials with a ceiling", "retainer"],
+    "payment": "Milestones, invoiced on delivery of each agreed increment.",
+    "nda": "Signed before any document is shared, on request."
+  },
+  "boundaries": {
+    "never": [
+      "Quote a price before scoping",
+      "Promise a delivery date before the brief is agreed",
+      "Take on work whose failure mode the client cannot survive without saying so"
+    ]
+  }
+}

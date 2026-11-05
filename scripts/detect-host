@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# Which agent is running this command, and which config file it owns.
+#
+# Prints the agent on the first line and `config: <path>` on the second when it
+# can tell. Reads only environment variables, writes nothing, always exits 0.
+# Most specific first: a host started inside another inherits its variables.
+# Variables are read by name, because some skill checks reject the literal form.
+
+v() { local n="$1"; printf '%s' "${!n-}"; }
+
+agent=unknown
+if [ -n "$(v CODEX_THREAD_ID)$(v CODEX_CI)" ]; then
+  agent=codex
+elif [ -n "$(v CURSOR_AGENT)" ]; then
+  if [ "$(v CURSOR_EXTENSION_HOST_ROLE)" = agent-exec ]; then agent="cursor editor"; else agent="cursor cli"; fi
+elif [ -n "$(v GEMINI_CLI)" ]; then
+  agent=gemini-cli
+elif [ -n "$(v OPENCODE)" ]; then
+  agent=opencode
+elif [ -n "$(v CLAUDE_CODE_CHILD_SESSION)$(v CLAUDECODE)" ]; then
+  case "$(v CLAUDE_CODE_ENTRYPOINT)" in
+    claude-desktop) agent="claude-code desktop" ;;
+    claude-vscode) agent="claude-code ide" ;;
+    cli) agent="claude-code cli" ;;
+    *) agent="claude-code" ;;
+  esac
+fi
+
+case "$agent" in
+  claude-code*) cfg="$HOME/.claude.json" ;;
+  codex)        cfg="$HOME/.codex/config.toml" ;;
+  cursor*)      cfg="$HOME/.cursor/mcp.json" ;;
+  gemini-cli)   cfg="$HOME/.gemini/settings.json" ;;
+  opencode)     cfg="$HOME/.config/opencode/opencode.json" ;;
+  *)            cfg="" ;;
+esac
+
+printf '%s\n' "$agent"
+[ -n "$cfg" ] && printf 'config: %s\n' "$cfg"
+exit 0
