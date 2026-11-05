@@ -154,8 +154,7 @@ chat, never echo it, and say where you wrote it.
 
 ## 5. Verify
 
-Run the setup skill: `/abn:abn-setup` in Claude Code with the plugin, otherwise
-ask yourself to "set up ABN", which runs `abn-setup`.
+Run the setup skill: ask yourself to "set up ABN", which loads `abn-setup`.
 
 It checks the server, the sign-in, the account, the catalog version, quotas and
 updates, fixes what it can, and ends in **one line**:
@@ -209,7 +208,7 @@ reads code locally and reports findings; it uploads nothing.
 |---|---|
 | `git ls-remote` fails | No GitHub access. Check the network or proxy; nothing was installed. |
 | Gateway health check fails | Not live on this network. Install the skills, skip 3-4, briefs go by email. |
-| `npx skills` says Node is too old | Install Node 22.20+ and retry, or use a plugin route if the agent has one. |
+| `npx skills` says Node is too old | Install Node 22.20+ and retry; the skills route is the only one today. |
 | Skills listed, no `abn` tools | The agent has not reloaded: restart it, or reload config. Then re-check. |
 | `auth_required` on a tool | Sign in again as in step 4. |
 | `Integration not found` twice | ABN-side. Stop; tell the person, do not loop. |
