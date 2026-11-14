@@ -52,6 +52,33 @@ source in, nine locales out, validated, committed on `DEV`, merged to
 7. **Verify live**: every locale URL returns 200, the title matches, and the
    `hreflang` alternates list all nine. Report the URLs, not a summary.
 
+## Media, and the channels after the article
+
+An article is not the delivery on its own. What ships with it, and the order
+that avoids redoing work:
+
+- **Audio.** A reading of the whole English article (`audio/<slug>-en.mp3`), and
+  on the Vietnamese post its own Vietnamese reading (`audio/<slug>-vi.mp3`) —
+  generated from the *translated* file, so it reads Vietnamese. The film's
+  narration is shorter and is never the article track.
+- **Film.** 1080×1920, narration-driven timing, cover from frame 7. Gate it
+  until the composition check passes with zero errors *and* zero warnings, then
+  read the rendered frames — the checker passes compositions that a viewer would
+  call broken.
+- **Order matters.** Upload the media and put `audio`, `video` and `videoPoster`
+  in the **English** frontmatter *before* translating: the other eight locales
+  borrow those fields from the English post. Add them afterwards and every
+  locale needs a second pass.
+- **Public assets, verified.** Media lives on a public CDN, never in the repo.
+  Check each URL returns 200 *and* the expected byte count — a cached path can
+  serve stale bytes after a replacement, in which case publish the new file
+  under a new name.
+- **Then the channels, one route each.** A platform with two posting paths is a
+  double post waiting to happen. Read the result back from the platform rather
+  than from the tool's own success line: TikTok visibility from the content
+  list (a new post sits at "only me · under review" before it flips), YouTube
+  from its oEmbed endpoint, a scheduler from its saved schedule list.
+
 ## Hard rules
 
 - **One `localeid` for all nine.** It is how the language switcher finds them.
